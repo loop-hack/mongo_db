@@ -1,0 +1,82 @@
+1.) show dbs  (show all the database run it in mongodb shell)
+2.) use employees (use this to make changes in employees database)
+3.) CRUD , C-Create , R - Read, U - Update , D - Delete
+
+4.)  db.inventory.find() - Fetch all documents in that database
+       ex ---> db.inventory.find({ branch : "cse"}) 
+
+
+5.) db.inventory.find({tags:{ $in: ["cotton", "programmer"]}})   try  to find data where in tag section it has cotton or programmer
+
+
+6.) Run this in mongodb shell to create a data base 
+
+ db.inventory.insertMany([
+  {
+    item: 'journal',
+    qty: 25,
+    tags: ['blank', 'red'],
+    size: { h: 14, w: 21, uom: 'cm' }
+  },
+  {
+    item: 'mat',
+    qty: 85,
+    tags: ['gray'],
+    size: { h: 27.9, w: 35.5, uom: 'cm' }
+  },
+  {
+    item: 'mousepad',
+    qty: 25,
+    tags: ['gel', 'blue'],
+    size: { h: 19, w: 22.85, uom: 'cm' }
+  }
+]);
+
+
+7.) and operator
+        db.inventory.find({status:"A" , qty:{$lt:30}})
+
+8.) or operator
+        db.inventory.find({ $or: [{ item : "mat", qty : 25 }]})
+
+        db.inventory.find({ $or: [ {item : "mat"}, {qty :{$lt:85} }]})  here $lt:85 means less than 85
+
+        db.inventory.find({ $or: [ {item : "mat"}, {qty :{$gt:25} }]})  here $gt:25 means greater than 85
+
+
+
+9.) db.inventory.findOne({ tags : {$in : ['blank','gel']}}) 
+        
+        gets only one document which has either 'balnk' or 'gel' and whichever come first
+
+
+10.) for updating data in one database
+
+        db.inventory.updateOne(
+        { item: 'paper' },
+        {
+            $set: { 'size.uom': 'cm', status: 'P' },
+            $currentDate: { lastModified: true }
+        }
+        );
+
+
+11.) for updating multiple related data in database
+
+        db.inventory.updateMany(
+            { qty: { $lt: 50 } },
+            {
+                $set: { 'size.uom': 'in', status: 'P' },
+                $currentDate: { lastModified: true }
+            }
+            );
+
+
+12.) for deleting one document of database
+
+           db.inventory.deleteOne({ status: 'D' });
+
+13.) for deleting multiple documents from data with specific condition
+
+            db.inventory.deleteMany({ status: 'A' });
+
